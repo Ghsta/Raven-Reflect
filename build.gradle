@@ -1,0 +1,55 @@
+buildscript {
+    repositories {
+        maven { url = 'https://files.minecraftforge.net/maven' }
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+
+version = ''
+group = 'zen.relife'
+archivesBaseName = 'a'
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+
+minecraft {
+    mappings channel: 'snapshot', version: '20171003-1.12'
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+        }
+
+        server {
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'debug'
+        }
+    }
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2855'
+}
+
+tasks.register('generateSources', Copy) {
+    from sourceSets.main.java
+    into "$buildDir/generated-src"
+    filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: [
+            'REVISION': "git branch --show-current".execute().text.trim() + "/" + "git rev-parse --short HEAD".execute().text.trim()
+    ])
+}
+
+tasks.withType(JavaCompile).configureEach {
+    dependsOn("generateSources")
+    compileJava.source = "$buildDir/generated-src"
+    // Make sure we can use Chinese comments in code
+    options.encoding = 'UTF-8'
+}
