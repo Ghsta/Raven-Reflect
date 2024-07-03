@@ -4,17 +4,19 @@ buildscript {
         jcenter()
         mavenCentral()
     }
+
     dependencies {
+
         classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
+
     }
 }
 
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
-
 version = ''
-group = 'zen.relife'
+group = ''
 archivesBaseName = 'a'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
@@ -36,6 +38,8 @@ minecraft {
 }
 
 dependencies {
+    implementation 'org.projectlombok:lombok:1.18.28'
+    compileOnly 'org.projectlombok:lombok:1.18.28'
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2855'
 }
 
@@ -43,7 +47,6 @@ tasks.register('generateSources', Copy) {
     from sourceSets.main.java
     into "$buildDir/generated-src"
     filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: [
-            'REVISION': "git branch --show-current".execute().text.trim() + "/" + "git rev-parse --short HEAD".execute().text.trim()
     ])
 }
 

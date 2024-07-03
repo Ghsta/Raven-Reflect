@@ -7,7 +7,6 @@
       <item index="3" class="java.lang.String" itemvalue="net.minecraftforge.eventbus.api.SubscribeEvent" />
     </list>
   </component>
-  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$" />
   </component>
